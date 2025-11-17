@@ -1,0 +1,47 @@
+# 签名配置示例
+# 
+# 如果您想在 build.gradle 中配置签名，可以参考以下方式：
+
+# 1. 在项目根目录创建 keystore.properties 文件（不要提交到Git）
+storePassword=你的密钥库密码
+keyPassword=你的密钥密码
+keyAlias=key0
+storeFile=C:/keys/digital-backpack.jks
+
+# 2. 在 app/build.gradle 中添加签名配置：
+
+android {
+    signingConfigs {
+        release {
+            // 从 keystore.properties 读取签名信息
+            def keystorePropertiesFile = rootProject.file("keystore.properties")
+            def keystoreProperties = new Properties()
+            if (keystorePropertiesFile.exists()) {
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
+    }
+    
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+# 3. 在 .gitignore 中添加（避免泄露密钥）：
+keystore.properties
+*.jks
+*.keystore
+
+# 配置完成后，运行命令即可自动签名：
+# gradlew assembleRelease
+
