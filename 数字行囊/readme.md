@@ -206,11 +206,11 @@ kotlinx-coroutines-android
 
 ## 👨‍💻 开发者
 
-使用Cursor AI助手开发
+遵车：廖小波
 
 ## 📞 反馈与支持
 
-如有问题或建议，欢迎提出！
+TEL:18985625686
 
 ---
 
